@@ -24,7 +24,7 @@ const SignUp = () => {
      if(res.data.token){
        setToken(res.data.token)
      }
-     navigate("/login")
+     navigate("/notes")
    } catch (error) {
     console.log("Sign Up failed ", error.message)
     alert("Signup Falied", error.message)

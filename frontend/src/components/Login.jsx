@@ -20,7 +20,7 @@ const Login = () => {
         setToken(res.data.token)
       }
       
-      navigate("/")
+      navigate("/notes")
     } catch (error) {
       console.log("Login Failed", error.message)
       alert("Login Failed" ,error.message)
