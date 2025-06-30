@@ -5,10 +5,10 @@ import { createNote, getAllNotes, getNoteById, deleteNote } from "../controllers
 const router = express.Router()
 
 
-router.post("/",protect, createNote)
-router.get("/", protect, getAllNotes)
-router.get("/:id", protect, getNoteById)
+router.post("/createNote",protect, createNote)
+router.get("/notes", protect, getAllNotes)
+router.get("/notes/:id", protect, getNoteById)
 // router.patch("/:id", protect, updateNote)
-router.delete("/:id", protect, deleteNote)
+router.delete("/deleteNote/:id", protect, deleteNote)
 
 export default router
