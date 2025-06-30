@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import User from "./user";
 
 
 const notesSchema = new mongoose.Schema({
@@ -13,7 +12,7 @@ const notesSchema = new mongoose.Schema({
     },
     user:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:User,
+        ref:"User",
         required:true
     },
     tags:[{
