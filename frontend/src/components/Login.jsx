@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { setToken } from "../utils/auth";
+import {motion} from "framer-motion"
 
 const Login = () => {
   const [email, setEmail] = useState("")
@@ -28,8 +29,12 @@ const Login = () => {
 
   }
   return (
-    <div className="bg-gray-500 h-screen  flex justify-center items-center">
-      <div className="bg-gray-700  p-8 flex flex-col rounded-lg w-full max-w-md items-center ">
+    <div className=" h-screen  flex justify-center items-center">
+      <motion.div
+        initial={{opacity:0, y:60}}
+        animate={{opacity:1, y:0}}
+        transition={{duration:0.8}}
+       className="bg-gray-800  p-8 flex flex-col rounded-lg w-full max-w-md items-center ">
         <h2 className="text-white text-2xl font-medium m-6">Login</h2>
         <input
         value={email}
@@ -41,7 +46,7 @@ const Login = () => {
         <input
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-          placeholder="password"
+          placeholder="Password"
           type="password"
           className="w-full p-2 m-3  rounded border border-gray-400  text-gray-100 "
         />
@@ -51,7 +56,7 @@ const Login = () => {
         <p className="text-gray-400  ">
           Dont have an account ? {" "} <Link className="underline text-blue-400" to={"/"}>Sign Up</Link>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 };

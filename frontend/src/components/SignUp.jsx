@@ -3,6 +3,7 @@ import { setToken } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
 import {  useState } from "react";
 import axios from "axios"
+import {motion} from "framer-motion"
 
 const SignUp = () => {
   const [username, setusername] = useState("");
@@ -31,8 +32,12 @@ const SignUp = () => {
    }
   }
   return (
-    <div className="bg-gray-500 h-screen  flex justify-center items-center">
-      <div className="bg-gray-700  p-8 flex flex-col rounded-lg w-full max-w-md items-center ">
+    <div className=" h-screen  flex justify-center items-center">
+      <motion.div
+       initial={{opacity:0, y:60}}
+       animate={{opacity:1, y:0}}
+       transition={{duration:0.9}}
+       className="bg-gray-800  p-8 flex flex-col rounded-lg w-full max-w-md items-center ">
         <h2 className="text-white text-2xl font-medium m-6">Sign Up</h2>
 
         <input
@@ -67,9 +72,10 @@ const SignUp = () => {
             Login
           </Link>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 };
 
 export default SignUp;
+
