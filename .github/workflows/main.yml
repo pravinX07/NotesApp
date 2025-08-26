@@ -1,35 +1,93 @@
-name: CI Pipeline
+name: Fullstack CI/CD
 
-on: 
- push:
-    branches: [ "master" ]
- pull_request:
-    branches: [ "master" ]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:   # ✅ allow manual run
 
 jobs:
-    build-and-test:
-        runs-on: ubuntu-latest
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend   # path to frontend folder
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-        steps:
-          - name: checkout code
-            uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
-          - name: setup Node.js
-            uses: actions/setup-node@v3
-            with :
-               node-version: "18"  
-      
-          - name: Install dependancies
-            run : npm install
-    
-          - name: Run lint
-            run: npm run lint --if-present
-          
-          - name : Run tests
-            run :  npm test --if-present
-          
-          - name: Build project
-            run : npm run build
+      - name: Install deps
+        run: npm install
 
-      
-   
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test -- --watchAll=false
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload frontend build
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build
+          path: frontend/build
+
+  server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: server   # path to backend folder
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install deps
+        run: npm install
+
+      - name: Run lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+      - name: Package server
+        run: zip -r server.zip .
+
+      - name: Upload server build
+        uses: actions/upload-artifact@v3
+        with:
+          name: server-build
+          path: server.zip
+
+  deploy:
+    needs: [frontend, server]   # wait for both to finish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download frontend build
+        uses: actions/download-artifact@v3
+        with:
+          name: frontend-build
+          path: ./frontend
+
+      - name: Download server build
+        uses: actions/download-artifact@v3
+        with:
+          name: server-build
+          path: ./server
+
+      # Example: Deploy to Render, AWS, or custom server
+      - name: Deploy
+        run: echo "Deploying frontend + backend 🚀"
